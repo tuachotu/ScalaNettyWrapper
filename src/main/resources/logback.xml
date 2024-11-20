@@ -5,12 +5,8 @@
             <providers>
                 <timestamp />
                 <logLevel />
-                <loggerName />
-                <threadName />
                 <message /> <!-- Includes the default message -->
                 <arguments /> <!-- Adds structured arguments -->
-                <mdc />
-                <callerData />
             </providers>
         </encoder>
     </appender>
@@ -28,10 +24,10 @@
                 <logLevel />
                 <loggerName />
                 <threadName />
-                <message /> <!-- Includes the default message -->
-                <arguments /> <!-- Adds structured arguments -->
                 <mdc />
                 <callerData />
+                <message /> <!-- Includes the default message -->
+                <arguments /> <!-- Adds structured arguments -->
             </providers>
         </encoder>
     </appender>

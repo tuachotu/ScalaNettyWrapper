@@ -15,6 +15,9 @@ libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.16"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.5.12"
 // https://mvnrepository.com/artifact/net.logstash.logback/logstash-logback-encoder
 libraryDependencies += "net.logstash.logback" % "logstash-logback-encoder" % "8.0"
+// https://mvnrepository.com/artifact/com.typesafe/config
+libraryDependencies += "com.typesafe" % "config" % "1.4.3"
+
 
 
 

@@ -6,6 +6,8 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.codec.http._
+import com.tuachotu.conf.Constant
+import com.tuachotu.util.ConfigUtil
 import com.tuachotu.util.LoggerUtil
 import com.tuachotu.util.LoggerUtil.Logger
 import scala.jdk.CollectionConverters._
@@ -14,7 +16,7 @@ import com.tuachotu.http.handlers.HttpHandler
 
 object HttpServer:
   implicit private val logger: Logger = LoggerUtil.getLogger(classOf[HttpServer.type])
-  def start(port: Int = 2107): Unit = // TODO : Move port to config
+  def start(port: Int = ConfigUtil.getInt("server.port", 2107)): Unit = // TODO : Move port to config
     // This Group handles incoming connection request, just one thread for that
     // Accepts incoming connections and assigns them to a worker.
     val bossGroup: EventLoopGroup = new NioEventLoopGroup(1)
@@ -37,16 +39,16 @@ object HttpServer:
 
       val f: ChannelFuture = bootstrap.bind(port).sync()
       if f.isSuccess then
-        val jsonMessage = Map("port" -> port)
-        LoggerUtil.info("Server started", "port", 2107)
+        LoggerUtil.info(Constant.ServerStarted, "port", port)
         sys.addShutdownHook {
           shutdown()
         }
         f.channel().closeFuture().sync()
       else
-        println(s"Failed to bind to port $port")
+        LoggerUtil.error(Constant.ServerStartFailed, "reason", "Failed to bind", "port", port)
     catch
-      case e: Exception => println(s"An error occurred: ${e.getMessage}")
+      case e: Exception =>
+        LoggerUtil.error(Constant.ServerStartupError, "error", e.getMessage)
     finally
       if bossGroup != null && workerGroup != null then
         // shut down Boss and Worker Group gracefully!
@@ -59,4 +61,4 @@ object HttpServer:
         workerGroup.shutdownGracefully()
       if bossGroup != null then
         bossGroup.shutdownGracefully()
-      println("Server shutdown complete.")
+      LoggerUtil.info(Constant.ServerShutdownComplete)

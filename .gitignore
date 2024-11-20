@@ -49,3 +49,6 @@ metals.sbt
 *.tmp
 *.swp
 *.swo
+
+
+logs/
